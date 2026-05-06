@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wordle Eng - Multilingual Legacy</title>
+    <style>
+        :root {
+            --c-correto: #538d4e;
+            --c-tem: #b59f3b;
+            --c-erro: #3a3a3c;
+            --bg: #121213;
+        }
+
+        body {
+            background: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+
+        /* Telas */
+        #tela-inicio {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #tela-jogo {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-idioma {
+            background: #538d4e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-idioma:hover {
+            background: #3d6a39;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            background: #272729;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #3a3a3c;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: 5px;
+        }
+
+        .linha {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .tile {
+            width: 55px;
+            height: 55px;
+            border: 2px solid #3a3a3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .instrucoes {
+            max-width: 350px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #818384;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="tela-inicio">
+        <h1>WORDLE ENG</h1>
+        <p>Escolha o idioma / Choose your language:</p>
+        <button class="btn-idioma" onclick="comecar('pt')">Português</button>
+        <button class="btn-idioma" onclick="comecar('en')">English</button>
+    </div>
+
+    <div id="tela-jogo">
+        <div class="instrucoes" id="msg-instr"></div>
+        <div class="stats-container">
+            <div>SCORE: <span id="score-val">0</span></div>
+            <div>RODADA/ROUND: <span id="round-val">1</span></div>
+        </div>
+        <div class="grid" id="board"></div>
+    </div>
+
+    <script>
+        // --- VARIÁVEIS GLOBAIS (DESIGN RUIM) ---
+        let dic = {
+            'pt': ["TESTE", "CLASSE", "DADOS", "LOGIC", "PILHA", "SUITE"],
+            'en': ["CLEAN", "SMELL", "PRINT", "CODE", "FILES", "STACK"] // CODE tem 4 letras, vai dar erro no grid de 5! (Desafio extra)
+        };
+
+        let i_escolhido = '';
+        let p_s = '';
+        let r_a = 0; let c_a = 0;
+        let sc = 0; let rd = 1;
+        let end = false;
+        let m = [["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""]];
+
+        // Função que mistura controle de fluxo com UI
+        function comecar(idioma) {
+            i_escolhido = idioma;
+            document.getElementById('tela-inicio').style.display = 'none';
+            document.getElementById('tela-jogo').style.display = 'flex';
+
+            if (idioma === 'pt') {
+                document.getElementById('msg-instr').innerText = "Tente adivinhar a palavra de 5 letras.";
+            } else {
+                document.getElementById('msg-instr').innerText = "Guess the 5-letter word.";
+            }
+
+            p_s = dic[i_escolhido][Math.floor(Math.random() * dic[i_escolhido].length)].toUpperCase();
+            desenhar();
+        }
+
+        function desenhar() {
+            const b = document.getElementById("board");
+            b.innerHTML = "";
+            for (let i = 0; i < 6; i++) {
+                let row = document.createElement("div");
+                row.className = "linha";
+                for (let j = 0; j < 5; j++) {
+                    let t = document.createElement("div");
+                    t.className = "tile";
+                    t.id = "t-" + i + "-" + j;
+                    row.appendChild(t);
+                }
+                b.appendChild(row);
+            }
+        }
+
+        window.onkeydown = function (e) {
+            if (end || i_escolhido === '') return;
+            let k = e.key.toUpperCase();
+
+            if (k === "BACKSPACE" && c_a > 0) {
+                c_a--;
+                m[r_a][c_a] = "";
+                document.getElementById("t-" + r_a + "-" + c_a).innerText = "";
+            }
+            else if (k === "ENTER" && c_a === 5) {
+                let u_w = m[r_a].join("");
+
+                // Lógica de cores e pontuação (Tudo acoplado)
+                for (let i = 0; i < 5; i++) {
+                    let tile = document.getElementById("t-" + r_a + "-" + i);
+                    if (u_w[i] === p_s[i]) {
+                        tile.style.background = "#538d4e";
+                        sc += 10;
+                    } else if (p_s.includes(u_w[i])) {
+                        tile.style.background = "#b59f3b";
+                        sc += 5;
+                    } else {
+                        tile.style.background = "#3a3a3c";
+                    }
+                    tile.style.borderColor = "transparent";
+                }
+
+                document.getElementById("score-val").innerText = sc;
+
+                if (u_w === p_s) {
+                    alert(i_escolhido === 'pt' ? "Acertou!" : "Correct!");
+                    rd++;
+                    document.getElementById("round-val").innerText = rd;
+                    r_a = 0; c_a = 0;
+                    p_s = dic[i_escolhido][Math.floor(Math.random() * dic[i_escolhido].length)].toUpperCase();
+                    m = [["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""], ["", "", "", "", ""]];
+                    desenhar();
+                } else {
+                    r_a++;
+                    c_a = 0;
+                    if (r_a === 6) {
+                        alert("Fim/End! Word: " + p_s);
+                        end = true;
+                    }
+                }
+            }
+            else if (/^[A-Z]$/.test(k) && c_a < 5) {
+                m[r_a][c_a] = k;
+                document.getElementById("t-" + r_a + "-" + c_a).innerText = k;
+                c_a++;
+            }
+        };
+    </script>
+</body>
+
+</html>
