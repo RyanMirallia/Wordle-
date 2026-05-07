@@ -1,0 +1,90 @@
+:root {
+    --c-correto: #538d4e;
+    --c-tem: #b59f3b;
+    --c-erro: #3a3a3c;
+    --bg: #121213;
+}
+
+body {
+    background: var(--bg);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 20px;
+}
+
+/* Telas */
+#tela-inicio {
+    text-align: center;
+    margin-top: 50px;
+}
+
+#tela-jogo {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-idioma {
+    background: #538d4e;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-idioma:hover {
+    background: #3d6a39;
+}
+
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    background: #272729;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #3a3a3c;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.tile {
+    width: 55px;
+    height: 55px;
+    border: 2px solid #3a3a3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.instrucoes {
+    max-width: 350px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #818384;
+    margin-bottom: 20px;
+}
