@@ -1,7 +1,8 @@
 Engenharia de Software e o legado "Wordle Multi"
 Relatório:
 
-Primeiramente dividimos o html e o css e dois arquivos diferentes: "index.html" e "style.css" para dividir a estrutura da estilização do projeto.
+Primeiramente dividimos o html e o css em dois arquivos diferentes: "index.html" e "style.css" para dividir a estrutura da estilização do projeto.
 Para aplicar os conceitos de MVC vamos dividir a lógica do Wordle em "Model, View e Controller".
+
 Model: isolamento da lógica de negócio e regras do jogo na classe Model, substituir nomes de variáveis para melhor compreensão de seu significa, eliminando o 
-código espaguete, uso de constantes como "TENTATIVAS_MAXIMAS" para definir configurações do jogo e facilitar a evolução do software.
+código espaguete, uso de constantes como "TENTATIVAS_MAXIMAS" para definir configurações do jogo e eliminar os números mágicos.
