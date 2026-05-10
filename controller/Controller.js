@@ -23,7 +23,7 @@ export class Controller {
         const botoes = document.querySelectorAll('.btn-idioma');
         botoes.forEach(botao => {
             botao.addEventListener('click', () => {
-                const idioma = botao.textContent === 'Português' ? 'pt' : 'en';
+                const idioma = botao.getAttribute('onclick').includes('pt') ? 'pt' : 'en';
                 this.iniciarJogo(idioma);
             });
         });
@@ -125,10 +125,9 @@ export class Controller {
             'erro': '#3a3a3c'
         };
         
-        for (let coluna = 0; coluna < cores.length; coluna++) {
-            const cor = mapaCores[cores[coluna]];
-            this.view.colorTile(linha, coluna, cor);
-        }
+        cores.forEach((status, coluna) => {
+            this.view.colorTile(linha, coluna, mapaCores[status]);
+        });
     }
     
     // Trata a vitória do jogador
