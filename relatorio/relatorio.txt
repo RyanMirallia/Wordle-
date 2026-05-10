@@ -1,8 +1,18 @@
-Engenharia de Software e o legado "Wordle Multi"
 Relatório:
 
-Primeiramente dividimos o html e o css em dois arquivos diferentes: "index.html" e "style.css" para dividir a estrutura da estilização do projeto.
-Para aplicar os conceitos de MVC vamos dividir a lógica do Wordle em "Model, View e Controller".
-
-Model: isolamento da lógica de negócio e regras do jogo na classe Model, substituir nomes de variáveis para melhor compreensão de seu significa, eliminando o 
-código espaguete, uso de constantes como "TENTATIVAS_MAXIMAS" para definir configurações do jogo e eliminar os números mágicos.
+O processo de transformação do software Wordle Multi teve como ponto de partida um protótipo funcional, porém estruturado como um "código espaguete", onde toda
+a lógica, estilo e interface estavam misturados em um único arquivo.
+A primeira fase da montagem consistiu na limpeza estrutural. O código CSS foi o primeiro a ser isolado, 
+movendo as definições visuais para um arquivo externo, o que permitiu que o HTML passasse a carregar apenas a estrutura básica do jogo. Em seguida, a lógica de
+programação foi retirada de dentro do HTML para ser distribuída em módulos específicos.  
+A construção lógica começou pelo Model, onde foi centralizado toda ainteligência do sistema. Ele passou a ser o único responsável por gerenciar os dicionários 
+de palavras, sortear a palavra secreta, calcular a pontuação e validar se as tentativas estavam corretas. Nesta etapa, também foram corrigidas inconsistências 
+nos dados, como o filtro para garantir que todas as palavras tivessem exatamente cinco letras, evitando erros no tabuleiro.  
+Na sequência, foi desenvolvida a View, focada exclusivamente na interface, sua função é apenas renderizar o tabuleiro 6x5, atualizar as cores das letras e exibir 
+mensagens e pontuações para o usuário conforme solicitado pelos outros módulos. 
+Por fim, a montagem foi concluída com o Controller. Ele escuta as interações do jogador, como cliques nos botões
+de idioma e teclas digitadas, e faz a ponte entre o Model e a View, garantindo que as ações do usuário resultem nas mudanças corretas no estado do jogo e na tela.  
+Ao longo desse processo, foi aplicado boas práticas de construção para eliminar "maus cheiros" no código. 
+Foram substituidos nomes de variaveis não compreensiveis (como r_a e c_a) por termos que revelam a intenção do dado (linha_atual e coluna_atual) e números 
+mágicos foram eliminados, utilizando constantes centralizadas para configurar limites de tentativas e pontuações.
+Toda essa evolução foi gerida de forma incremental via Git, pela a branch desenvolvimento.
