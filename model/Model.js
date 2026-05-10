@@ -1,4 +1,4 @@
-export class model {
+export class Model {
     
     constructor() {
         this.TENTATIVAS_MAXIMAS = 6;
